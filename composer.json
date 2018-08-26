@@ -22,5 +22,10 @@
     "scripts": {
         "test": "phpunit",
         "test:coverage": "phpunit --coverage-html coverage"
+    },
+    "config": {
+        "platform": {
+            "php": "5.5.0"
+        }
     }
 }
