@@ -47,11 +47,11 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->invokeMiddleware('/not/path1', ['/path1'], ['role1'], $next, true);
     }
 
-    public function testDoesNotAddRolesWithoutPattern()
+    public function testAddsRolesWithoutPattern()
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertNull($req->getAttribute('roles'));
+            $test->assertSame(['role1'], $req->getAttribute('roles'));
             return new Response();
         };
 
@@ -59,24 +59,24 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->invokeMiddleware('/path1', [], ['role1'], $next, true);
     }
 
-    public function testDoesNotAddRolesWithoutRouteAttribute()
+    public function testAddsRolesWithoutRouteAttribute()
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertNull($req->getAttribute('roles'));
+            $test->assertSame(['role1'], $req->getAttribute('roles'));
             return new Response();
         };
 
         $this->invokeMiddleware('/path1', ['/path1'], ['role1'], $next, false);
     }
 
-    private function invokeMiddleware($path, $routes, $roles, $next, $addRole)
+    private function invokeMiddleware($path, $routes, $roles, $next, $addRoute)
     {
         $route = $this->getMockBuilder(RouteInterface::class)->getMock();
         $route->method('getPattern')->willReturn($path);
 
         $request = Request::createFromEnvironment(Environment::mock());
-        if ($addRole) {
+        if ($addRoute) {
             $request = $request->withAttribute('route', $route);
         }
 

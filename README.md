@@ -19,4 +19,8 @@ $app->add(new RoleMiddleware(
     ['route_pattern' => ['/secured']]
 ));
 ```
-You can add several role provider for different paths.
+You can add several role providers for different paths.
+
+This needs the Slim setting `determineRouteBeforeAppMiddleware` set to true.
+
+For more information, see the inline documentation for the classes.

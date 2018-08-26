@@ -14,6 +14,8 @@ use Slim\Interfaces\RouteInterface;
  *
  * Roles are loaded from a RoleProviderInterface object. If that does
  * not return any roles the 'anonymous' role is added.
+ *
+ * If the route attribute is missing, the option "route_pattern" is ignored.
  */
 class RoleMiddleware
 {
@@ -36,7 +38,7 @@ class RoleMiddleware
      * Constructor.
      *
      * Available options (all optional):
-     * route_pattern: only authenticate for this routes, matched by "starts-with"
+     * route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
      *
      * Example:
      * ['route_pattern' => ['/secured']]
@@ -75,8 +77,13 @@ class RoleMiddleware
 
     private function shouldAuthorize(RouteInterface $route = null)
     {
-        if (isset($this->options['route_pattern']) && is_array($this->options['route_pattern']) &&
-            count($this->options['route_pattern']) > 0 && $route !== null
+        if ($route === null) {
+            return true;
+        }
+
+        if (isset($this->options['route_pattern']) &&
+            is_array($this->options['route_pattern']) &&
+            count($this->options['route_pattern']) > 0
         ) {
             $routePattern = $route->getPattern();
             foreach ($this->options['route_pattern'] as $includePattern) {
@@ -84,7 +91,9 @@ class RoleMiddleware
                     return true;
                 }
             }
+            return false;
         }
-        return false;
+
+        return true;
     }
 }
