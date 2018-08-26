@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Tkhamez\Tests\Slim\RoleAuth;
 
@@ -72,7 +72,7 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
 
     private function invokeMiddleware($path, $routes, $roles, $next, $addRole)
     {
-        $route = $this->createMock(RouteInterface::class);
+        $route = $this->getMockBuilder(RouteInterface::class)->getMock();
         $route->method('getPattern')->willReturn($path);
 
         $request = Request::createFromEnvironment(Environment::mock());
@@ -80,12 +80,12 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
             $request = $request->withAttribute('route', $route);
         }
 
-        /* @var $roleProvider RoleProviderInterface */
-        $roleProvider = $this->createMock(RoleProviderInterface::class);
+        $roleProvider = $this->getMockBuilder(RoleProviderInterface::class)->getMock();
         $roleProvider->method('getRoles')->willReturn($roles);
 
+        /* @var $roleProvider RoleProviderInterface */
         $roleMiddleware = new RoleMiddleware($roleProvider, ['route_pattern' =>  $routes]);
 
-        return $roleMiddleware($request, new Response(), $next);
+        $roleMiddleware($request, new Response(), $next);
     }
 }

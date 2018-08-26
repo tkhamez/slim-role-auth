@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Tkhamez\Slim\RoleAuth;
 
@@ -48,10 +48,7 @@ class SecureRouteMiddleware
         $this->secured = $secured;
     }
 
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next): ResponseInterface
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
         $roles = $request->getAttribute('roles');
 

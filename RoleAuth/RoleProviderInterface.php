@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Tkhamez\Slim\RoleAuth;
 
@@ -14,5 +14,5 @@ interface RoleProviderInterface
      * @param ServerRequestInterface $request
      * @return string[]
      */
-    public function getRoles(ServerRequestInterface $request): array;
+    public function getRoles(ServerRequestInterface $request);
 }

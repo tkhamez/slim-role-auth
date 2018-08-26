@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Tkhamez\Tests\Slim\RoleAuth;
 
@@ -60,9 +60,16 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(403, $response->getStatusCode());
     }
 
+    /**
+     * @param $conf
+     * @param $path
+     * @param $roles
+     * @param $addRoute
+     * @return Response
+     */
     private function invokeMiddleware($conf, $path, $roles, $addRoute)
     {
-        $route = $this->createMock(RouteInterface::class);
+        $route = $this->getMockBuilder(RouteInterface::class)->getMock();
         $route->method('getPattern')->willReturn($path);
 
         $request = Request::createFromEnvironment(Environment::mock());

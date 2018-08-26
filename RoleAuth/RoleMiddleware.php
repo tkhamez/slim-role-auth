@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace Tkhamez\Slim\RoleAuth;
 
@@ -50,10 +50,13 @@ class RoleMiddleware
         $this->options = $options;
     }
 
-    public function __invoke(
-        ServerRequestInterface $request,
-        ResponseInterface $response,
-        callable $next): ResponseInterface
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param callable $next
+     * @return ResponseInterface
+     */
+    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
         if (! $this->shouldAuthorize($request->getAttribute('route'))) {
             return $next($request, $response);
