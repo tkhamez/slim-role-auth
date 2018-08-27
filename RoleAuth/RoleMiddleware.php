@@ -13,7 +13,8 @@ use Slim\Interfaces\RouteInterface;
  * with string values, e. g. ['role.one', 'role.two'].
  *
  * Roles are loaded from a RoleProviderInterface object. If that does
- * not return any roles the 'anonymous' role is added.
+ * not return any roles the 'anonymous' role is added. A role "any"
+ * is always added.
  *
  * If the route attribute is missing, the option "route_pattern" is ignored.
  */
@@ -23,6 +24,11 @@ class RoleMiddleware
      * The anonymous role is added if the role provider does not return any roles.
      */
     const ROLE_ANONYMOUS = 'anonymous';
+
+    /**
+     * The "any" role is always added.
+     */
+    const ROLE_ANY = 'any';
 
     /**
      * @var RoleProviderInterface
@@ -69,6 +75,7 @@ class RoleMiddleware
             // no authenticated roles, add anonymous role
             $roles[] = self::ROLE_ANONYMOUS;
         }
+        $roles[] = self::ROLE_ANY;
 
         $request = $request->withAttribute('roles', $roles);
 

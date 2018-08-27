@@ -16,7 +16,7 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['r1', 'r2'], $req->getAttribute('roles'));
+            $test->assertSame(['r1', 'r2', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
             return new Response();
         };
 
@@ -28,7 +28,10 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame([RoleMiddleware::ROLE_ANONYMOUS], $req->getAttribute('roles'));
+            $test->assertSame(
+                [RoleMiddleware::ROLE_ANONYMOUS, RoleMiddleware::ROLE_ANY],
+                $req->getAttribute('roles')
+            );
             return new Response();
         };
 
@@ -51,7 +54,7 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['role1'], $req->getAttribute('roles'));
+            $test->assertSame(['role1', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
             return new Response();
         };
 
@@ -63,7 +66,7 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['role1'], $req->getAttribute('roles'));
+            $test->assertSame(['role1', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
             return new Response();
         };
 
