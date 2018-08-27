@@ -60,14 +60,24 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(403, $response->getStatusCode());
     }
 
+    public function testRedirects()
+    {
+        $conf = ['/secured' => ['role']];
+        $opts = ['redirect_url' => '/login'];
+        $response = $this->invokeMiddleware($conf, '/secured', [], true, $opts);
+        $this->assertSame(302, $response->getStatusCode());
+        $this->assertSame('/login', $response->getHeader('Location')[0]);
+    }
+
     /**
      * @param $conf
      * @param $path
      * @param $roles
      * @param $addRoute
+     * @param array $opts
      * @return Response
      */
-    private function invokeMiddleware($conf, $path, $roles, $addRoute)
+    private function invokeMiddleware($conf, $path, $roles, $addRoute, $opts = [])
     {
         $route = $this->getMockBuilder(RouteInterface::class)->getMock();
         $route->method('getPattern')->willReturn($path);
@@ -78,7 +88,7 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
         }
         $request = $request->withAttribute('roles', $roles);
 
-        $sec = new SecureRouteMiddleware($conf);
+        $sec = new SecureRouteMiddleware($conf, $opts);
 
         $next = function($request, $response) {
             return $response;

@@ -7,7 +7,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouteInterface;
 
 /**
- * Denies access to a route if the required role is missing (403).
+ * Denies access to a route if the required role is missing.
+ *
+ * Sends a HTTP status 403 (default) or optionally a "Location"
+ * header for a redirect.
  *
  * It loads the roles from the request attribute named "roles"
  * (an array with string values, e. g. ['role.one', 'role.two']).
@@ -28,24 +31,35 @@ class SecureRouteMiddleware
     private $secured;
 
     /**
+     * @var array
+     */
+    private $options;
+
+    /**
      * Constructor.
      *
-     * First match will be used.
-     *
-     * Keys are route pattern, matched by "starts-with".
-     * Values are roles, only one must match to allow the route.
-     *
+     * Secured param:
+     * - First match will be used.
+     * - Keys are route pattern, matched by "starts-with".
+     * - Values are roles, only one must match to allow the route.
      * Example:
      * [
      *      '/secured/public' => ['anonymous', 'user'],
      *      '/secured' => ['user'],
      * ]
      *
+     * Options:
+     * - redirect_url: send a Location header instead of a 403 status code.
+     * Example:
+     * ['redirect_url' => '/login']
+     *
      * @param array $secured
+     * @param array $options
      */
-    public function __construct(array $secured)
+    public function __construct(array $secured, array $options = [])
     {
         $this->secured = $secured;
+        $this->options = $options;
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
@@ -71,7 +85,11 @@ class SecureRouteMiddleware
         }
 
         if ($allowed === false) {
-            return $response->withStatus(403);
+            if (isset($this->options['redirect_url'])) {
+                return $response->withHeader('Location', (string)$this->options['redirect_url']);
+            } else {
+                return $response->withStatus(403);
+            }
         }
 
         return $next($request, $response);

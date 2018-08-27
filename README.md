@@ -9,13 +9,12 @@ Example of use:
 $app = new Slim\App();
 
 $app->add(new SecureRouteMiddleware([
-    '/secured/public' => ['anonymous', 'user'],
+    '/secured/public' => [RoleMiddleware::ROLE_ANY],
     '/secured' => ['user'],
 ]));
 
-$roleProvider = new RoleProvider() // must implement RoleProviderInterface
 $app->add(new RoleMiddleware(
-    $roleProvider,
+    new RoleProvider(), // must implement RoleProviderInterface
     ['route_pattern' => ['/secured']]
 ));
 ```
