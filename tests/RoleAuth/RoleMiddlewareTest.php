@@ -16,26 +16,12 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['r1', 'r2', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
+            $test->assertSame(['r1', 'r2'], $req->getAttribute('roles'));
             return new Response();
         };
 
         $this->invokeMiddleware('/path1',    ['/path1', '/path2'], ['r1', 'r2'], $next, true);
         $this->invokeMiddleware('/path23/4', ['/path1', '/path2'], ['r1', 'r2'], $next, true);
-    }
-
-    public function testAddsRoleAnonymous()
-    {
-        $test = $this;
-        $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(
-                [RoleMiddleware::ROLE_ANONYMOUS, RoleMiddleware::ROLE_ANY],
-                $req->getAttribute('roles')
-            );
-            return new Response();
-        };
-
-        $this->invokeMiddleware('/path1', ['/path1'], [], $next, true);
     }
 
     public function testDoesNotAddRolesForOtherPaths()
@@ -50,11 +36,11 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
         $this->invokeMiddleware('/not/path1', ['/path1'], ['role1'], $next, true);
     }
 
-    public function testAddsRolesWithoutPattern()
+    public function testAddsRolesWithoutPaths()
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['role1', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
+            $test->assertSame(['role1'], $req->getAttribute('roles'));
             return new Response();
         };
 
@@ -66,7 +52,7 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
     {
         $test = $this;
         $next = function (ServerRequestInterface $req) use ($test) {
-            $test->assertSame(['role1', RoleMiddleware::ROLE_ANY], $req->getAttribute('roles'));
+            $test->assertSame(['role1'], $req->getAttribute('roles'));
             return new Response();
         };
 
@@ -75,10 +61,10 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
 
     private function invokeMiddleware($path, $routes, $roles, $next, $addRoute)
     {
+        $request = Request::createFromEnvironment(Environment::mock());
+
         $route = $this->getMockBuilder(RouteInterface::class)->getMock();
         $route->method('getPattern')->willReturn($path);
-
-        $request = Request::createFromEnvironment(Environment::mock());
         if ($addRoute) {
             $request = $request->withAttribute('route', $route);
         }

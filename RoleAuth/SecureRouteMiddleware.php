@@ -21,7 +21,7 @@ use Slim\Interfaces\RouteInterface;
  * RouteInterface class from the request attribute named "route"
  * (provided by Slim).
  *
- * If the roles or the route attribute is missing, all routes are allowed.
+ * All routes are allowed if the "route" attributes is missing in the request object.
  */
 class SecureRouteMiddleware
 {
@@ -64,24 +64,23 @@ class SecureRouteMiddleware
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        $roles = $request->getAttribute('roles');
-
         $route = $request->getAttribute('route');
         if (! $route instanceof RouteInterface) {
             return $next($request, $response);
         }
 
-        $allowed = null;
-
+        $roles = $request->getAttribute('roles');
         $routePattern = $route->getPattern();
+
+        $allowed = true;
         foreach ($this->secured as $securedRoute => $requiredRoles) {
-            if (strpos($routePattern, $securedRoute) === 0) {
-                $allowed = false;
-                if (is_array($roles) && count(array_intersect($requiredRoles, $roles)) > 0) {
-                    $allowed = true;
-                }
-                break;
+            if (strpos($routePattern, $securedRoute) !== 0) {
+                continue;
             }
+            if (! is_array($roles) || count(array_intersect($requiredRoles, $roles)) === 0) {
+                $allowed = false;
+            }
+            break;
         }
 
         if ($allowed === false) {

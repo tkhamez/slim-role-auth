@@ -12,24 +12,11 @@ use Slim\Interfaces\RouteInterface;
  * Roles usually come from an authenticated user. It's an array
  * with string values, e. g. ['role.one', 'role.two'].
  *
- * Roles are loaded from a RoleProviderInterface object. If that does
- * not return any roles the 'anonymous' role is added. A role "any"
- * is always added.
- *
- * If the route attribute is missing, the option "route_pattern" is ignored.
+ * Roles are loaded from a RoleProviderInterface object.
+ * Roles are always added if the "route" attributes is missing in the request object.
  */
 class RoleMiddleware
 {
-    /**
-     * The anonymous role is added if the role provider does not return any roles.
-     */
-    const ROLE_ANONYMOUS = 'anonymous';
-
-    /**
-     * The "any" role is always added.
-     */
-    const ROLE_ANY = 'any';
-
     /**
      * @var RoleProviderInterface
      */
@@ -45,6 +32,8 @@ class RoleMiddleware
      *
      * Available options (all optional):
      * route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
+     *
+     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object.
      *
      * Example:
      * ['route_pattern' => ['/secured']]
@@ -66,23 +55,18 @@ class RoleMiddleware
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        if (! $this->shouldAuthorize($request->getAttribute('route'))) {
-            return $next($request, $response);
+        if ($this->shouldAddRoles($request->getAttribute('route'))) {
+            $request = $request->withAttribute('roles', $this->getRoles($request));
         }
-
-        $roles = $this->roleService->getRoles($request);
-        if (count($roles) === 0) {
-            // no authenticated roles, add anonymous role
-            $roles[] = self::ROLE_ANONYMOUS;
-        }
-        $roles[] = self::ROLE_ANY;
-
-        $request = $request->withAttribute('roles', $roles);
 
         return $next($request, $response);
     }
 
-    private function shouldAuthorize(RouteInterface $route = null)
+    /**
+     * @param RouteInterface|null $route
+     * @return bool
+     */
+    private function shouldAddRoles(RouteInterface $route = null)
     {
         if ($route === null) {
             return true;
@@ -102,5 +86,16 @@ class RoleMiddleware
         }
 
         return true;
+    }
+
+    /**
+     * @param ServerRequestInterface $request
+     * @return array|string[]
+     */
+    private function getRoles(ServerRequestInterface $request)
+    {
+        $roles = $this->roleService->getRoles($request);
+
+        return is_array($roles) ? $roles : [];
     }
 }

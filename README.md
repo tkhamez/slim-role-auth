@@ -9,7 +9,7 @@ Example of use:
 $app = new Slim\App();
 
 $app->add(new SecureRouteMiddleware([
-    '/secured/public' => [RoleMiddleware::ROLE_ANY],
+    '/secured/public' => ['any'],
     '/secured' => ['user'],
 ]));
 
