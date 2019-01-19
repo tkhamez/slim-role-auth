@@ -2,7 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/tkhamez/slim-role-auth.svg?branch=master)](https://travis-ci.org/tkhamez/slim-role-auth)
 
-Middleware for the Slim framework.
+Middleware for the [Slim framework](http://www.slimframework.com/).
 
 Example of use:
 ```php
