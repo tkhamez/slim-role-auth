@@ -9,6 +9,10 @@ php:
     - '7.3'
     - nightly
 
+env:
+    global:
+        #- CC_TEST_REPORTER_ID= travis-ci.org > repo > settings
+
 matrix:
     allow_failures:
         - php: nightly
@@ -16,5 +20,13 @@ matrix:
 install:
     - composer install
 
+before_script:
+    - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > cc-test-reporter
+    - chmod +x cc-test-reporter
+    - if [ $(phpenv version-name) = "7.2" ]; then ./cc-test-reporter before-build; fi
+
 script:
-    - vendor/bin/phpunit
+    - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+    - if [ $(phpenv version-name) = "7.2" ]; then ./cc-test-reporter after-build -t clover --exit-code $TRAVIS_TEST_RESULT; fi

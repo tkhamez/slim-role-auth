@@ -93,7 +93,7 @@ class SecureRouteMiddlewareTest extends TestCase
 
         $sec = new SecureRouteMiddleware($conf, $opts);
 
-        $next = function(ServerRequestInterface $request, ResponseInterface $response) {
+        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
             return $response;
         };
 

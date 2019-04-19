@@ -21,7 +21,7 @@ class RoleMiddlewareTest extends TestCase
             return new Response();
         };
 
-        $this->invokeMiddleware('/path1',    ['/path1', '/path2'], ['r1', 'r2'], $next, true);
+        $this->invokeMiddleware('/path1', ['/path1', '/path2'], ['r1', 'r2'], $next, true);
         $this->invokeMiddleware('/path23/4', ['/path1', '/path2'], ['r1', 'r2'], $next, true);
     }
 
