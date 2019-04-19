@@ -13,7 +13,6 @@ use Slim\Interfaces\RouteInterface;
  * with string values, e. g. ['role.one', 'role.two'].
  *
  * Roles are loaded from a RoleProviderInterface object.
- * Roles are always added if the "route" attributes is missing in the request object.
  */
 class RoleMiddleware
 {
@@ -31,12 +30,12 @@ class RoleMiddleware
      * Constructor.
      *
      * Available options (all optional):
-     * route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
+     * - route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
      *
-     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object.
+     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object, so
+     * are always added if the "route" attributes is missing in the request object.
      *
-     * Example:
-     * ['route_pattern' => ['/secured']]
+     * Example: ['route_pattern' => ['/secured']]
      *
      * @param RoleProviderInterface $roleService
      * @param array $options

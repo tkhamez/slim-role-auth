@@ -2,13 +2,16 @@
 
 namespace Tkhamez\Tests\Slim\RoleAuth;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouteInterface;
 
-class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
+class SecureRouteMiddlewareTest extends TestCase
 {
     public function testAllowProtectedWithoutRoute()
     {
@@ -51,11 +54,11 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
 
     public function testMatchesFirstFoundPath()
     {
-        $conf = ['/p1' => ['role1'], '/p1/p2' => ['role2']];
+        $conf = ['/p0' => ['role0'], '/p1' => ['role1'], '/p1/p2' => ['role2']];
         $response = $this->invokeMiddleware($conf, '/p1/p2', ['role1'], true);
         $this->assertSame(200, $response->getStatusCode());
 
-        $conf = ['/p1/p2' => ['role2'], '/p1' => ['role1']];
+        $conf = ['/p0' => ['role0'], '/p1/p2' => ['role2'], '/p1' => ['role1']];
         $response = $this->invokeMiddleware($conf, '/p1/p2', ['role1'], true);
         $this->assertSame(403, $response->getStatusCode());
     }
@@ -70,12 +73,12 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param $conf
-     * @param $path
-     * @param $roles
-     * @param $addRoute
+     * @param array $conf
+     * @param string $path
+     * @param array $roles
+     * @param bool $addRoute
      * @param array $opts
-     * @return Response
+     * @return ResponseInterface
      */
     private function invokeMiddleware($conf, $path, $roles, $addRoute, $opts = [])
     {
@@ -90,7 +93,7 @@ class SecureRouteMiddlewareTest extends \PHPUnit\Framework\TestCase
 
         $sec = new SecureRouteMiddleware($conf, $opts);
 
-        $next = function($request, $response) {
+        $next = function(ServerRequestInterface $request, ResponseInterface $response) {
             return $response;
         };
 

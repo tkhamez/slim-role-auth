@@ -1,10 +1,21 @@
-# Role based authorization
-
 [![Build Status](https://api.travis-ci.org/tkhamez/slim-role-auth.svg?branch=master)](https://travis-ci.org/tkhamez/slim-role-auth)
+
+# Role based authorization
 
 Middleware for the [Slim framework](http://www.slimframework.com/).
 
-Example of use:
+## Installation
+
+With Composer:
+
+```
+composer require tkhamez/slim-role-auth
+```
+
+## Usage
+
+Example:
+
 ```php
 $app = new Slim\App();
 

@@ -21,7 +21,7 @@ use Slim\Interfaces\RouteInterface;
  * RouteInterface class from the request attribute named "route"
  * (provided by Slim).
  *
- * All routes are allowed if the "route" attributes is missing in the request object.
+ * All routes are *allowed* if the "route" attributes is missing in the request object!
  */
 class SecureRouteMiddleware
 {
@@ -38,20 +38,15 @@ class SecureRouteMiddleware
     /**
      * Constructor.
      *
-     * Secured param:
+     * Parameter secured:
+     * - Example: ['/secured/public' => ['anonymous', 'user'], '/secured' => ['user']]
      * - First match will be used.
      * - Keys are route pattern, matched by "starts-with".
      * - Values are roles, only one must match to allow the route.
-     * Example:
-     * [
-     *      '/secured/public' => ['anonymous', 'user'],
-     *      '/secured' => ['user'],
-     * ]
      *
-     * Options:
+     * Parameter options:
+     * - Example: ['redirect_url' => '/login']
      * - redirect_url: send a Location header instead of a 403 status code.
-     * Example:
-     * ['redirect_url' => '/login']
      *
      * @param array $secured
      * @param array $options
@@ -62,6 +57,12 @@ class SecureRouteMiddleware
         $this->options = $options;
     }
 
+    /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface $response
+     * @param callable $next
+     * @return ResponseInterface
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
         $route = $request->getAttribute('route');

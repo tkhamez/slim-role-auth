@@ -2,6 +2,7 @@
 
 namespace Tkhamez\Tests\Slim\RoleAuth;
 
+use PHPUnit\Framework\TestCase;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 use Tkhamez\Slim\RoleAuth\RoleProviderInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -10,7 +11,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Interfaces\RouteInterface;
 
-class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
+class RoleMiddlewareTest extends TestCase
 {
     public function testAddsRolesForPaths()
     {
@@ -69,10 +70,10 @@ class RoleMiddlewareTest extends \PHPUnit\Framework\TestCase
             $request = $request->withAttribute('route', $route);
         }
 
+        /* @var $roleProvider RoleProviderInterface|\PHPUnit_Framework_MockObject_MockObject */
         $roleProvider = $this->getMockBuilder(RoleProviderInterface::class)->getMock();
         $roleProvider->method('getRoles')->willReturn($roles);
 
-        /* @var $roleProvider RoleProviderInterface */
         $roleMiddleware = new RoleMiddleware($roleProvider, ['route_pattern' =>  $routes]);
 
         $roleMiddleware($request, new Response(), $next);
