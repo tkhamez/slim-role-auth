@@ -32,8 +32,8 @@ class RoleMiddleware
      * Available options (all optional):
      * - route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
      *
-     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object, so
-     * are always added if the "route" attributes is missing in the request object.
+     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object, so roles
+     * are always added if the "route" attribute is missing.
      *
      * Example: ['route_pattern' => ['/secured']]
      *
