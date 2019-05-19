@@ -1,6 +1,12 @@
 {
     "name": "tkhamez/slim-role-auth",
-    "description": "Role based authorization for the Slim framework",
+    "description": "Role-based authorization for the Slim framework",
+    "keywords": [
+        "slim",
+        "authorization",
+        "psr-7",
+        "middleware"
+    ],
     "type": "library",
     "license": "MIT",
     "require": {
