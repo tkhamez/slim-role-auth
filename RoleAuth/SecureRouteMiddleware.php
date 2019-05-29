@@ -2,8 +2,11 @@
 
 namespace Tkhamez\Slim\RoleAuth;
 
+use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
 
 /**
@@ -23,8 +26,13 @@ use Slim\Interfaces\RouteInterface;
  *
  * All routes are *allowed* if the "route" attributes is missing in the request object!
  */
-class SecureRouteMiddleware
+class SecureRouteMiddleware implements MiddlewareInterface
 {
+    /**
+     * @var ResponseFactoryInterface
+     */
+    private $responseFactory;
+
     /**
      * @var array
      */
@@ -48,26 +56,27 @@ class SecureRouteMiddleware
      * - Example: ['redirect_url' => '/login']
      * - redirect_url: send a Location header instead of a 403 status code.
      *
+     * @param ResponseFactoryInterface $responseFactory
      * @param array $secured
      * @param array $options
      */
-    public function __construct(array $secured, array $options = [])
+    public function __construct(ResponseFactoryInterface $responseFactory, array $secured, array $options = [])
     {
+        $this->responseFactory = $responseFactory;
         $this->secured = $secured;
         $this->options = $options;
     }
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $route = $request->getAttribute('route');
         if (! $route instanceof RouteInterface) {
-            return $next($request, $response);
+            return $handler->handle($request);
         }
 
         $roles = $request->getAttribute('roles');
@@ -85,13 +94,16 @@ class SecureRouteMiddleware
         }
 
         if ($allowed === false) {
+            $response = $this->responseFactory->createResponse();
             if (isset($this->options['redirect_url'])) {
-                return $response->withHeader('Location', (string)$this->options['redirect_url']);
+                return $response
+                    ->withHeader('Location', (string) $this->options['redirect_url'])
+                    ->withStatus(302);
             } else {
                 return $response->withStatus(403);
             }
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 }

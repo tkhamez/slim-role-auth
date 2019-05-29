@@ -4,6 +4,8 @@ namespace Tkhamez\Slim\RoleAuth;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
 
 /**
@@ -14,7 +16,7 @@ use Slim\Interfaces\RouteInterface;
  *
  * Roles are loaded from a RoleProviderInterface object.
  */
-class RoleMiddleware
+class RoleMiddleware implements MiddlewareInterface
 {
     /**
      * @var RoleProviderInterface
@@ -48,17 +50,16 @@ class RoleMiddleware
 
     /**
      * @param ServerRequestInterface $request
-     * @param ResponseInterface $response
-     * @param callable $next
+     * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->shouldAddRoles($request->getAttribute('route'))) {
             $request = $request->withAttribute('roles', $this->getRoles($request));
         }
 
-        return $next($request, $response);
+        return $handler->handle($request);
     }
 
     /**

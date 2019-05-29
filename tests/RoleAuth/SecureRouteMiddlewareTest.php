@@ -4,11 +4,7 @@ namespace Tkhamez\Tests\Slim\RoleAuth;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
-use Slim\Http\Environment;
-use Slim\Http\Request;
-use Slim\Http\Response;
 use Slim\Interfaces\RouteInterface;
 
 class SecureRouteMiddlewareTest extends TestCase
@@ -72,31 +68,21 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame('/login', $response->getHeader('Location')[0]);
     }
 
-    /**
-     * @param array $conf
-     * @param string $path
-     * @param array $roles
-     * @param bool $addRoute
-     * @param array $opts
-     * @return ResponseInterface
-     */
-    private function invokeMiddleware($conf, $path, $roles, $addRoute, $opts = [])
+    private function invokeMiddleware($conf, $path, $roles, $addRoute, $opts = []): ResponseInterface
     {
-        $route = $this->getMockBuilder(RouteInterface::class)->getMock();
-        $route->method('getPattern')->willReturn($path);
+        $request = new \TestRequest();
+        $responseFactory = new \TestResponseFactory();
+        $requestHandler = new \TestRequestHandler();
 
-        $request = Request::createFromEnvironment(Environment::mock());
         if ($addRoute) {
+            $route = $this->getMockBuilder(RouteInterface::class)->getMock();
+            $route->method('getPattern')->willReturn($path);
             $request = $request->withAttribute('route', $route);
         }
         $request = $request->withAttribute('roles', $roles);
 
-        $sec = new SecureRouteMiddleware($conf, $opts);
+        $sec = new SecureRouteMiddleware($responseFactory, $conf, $opts);
 
-        $next = function (ServerRequestInterface $request, ResponseInterface $response) {
-            return $response;
-        };
-
-        return $sec($request, new Response(), $next);
+        return $sec->process($request, $requestHandler);
     }
 }
