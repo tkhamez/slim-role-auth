@@ -21,11 +21,11 @@ Example:
 use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 
-$app = AppFactory::create();
+$app = Slim\Factory\AppFactory::create();
 
 // Deny access if a required role is missing
 $app->add(new SecureRouteMiddleware(
-    new \Slim\Psr7\Factory\ResponseFactory(), // or another implementation of Psr\Http\Message\ResponseFactoryInterface
+    new Slim\Psr7\Factory\ResponseFactory(), // or another implementation of Psr\Http\Message\ResponseFactoryInterface
     [
         // route pattern -> roles, first "starts-with" match is used
         '/secured/public' => ['any'],
@@ -42,7 +42,7 @@ $app->add(new RoleMiddleware(
 
 // Add routing middleware last, so the `route` attribute from `$request` is available
 // (this replaces the determineRouteBeforeAppMiddleware setting from Slim 3).
-$app->add(new \Slim\Middleware\RoutingMiddleware($app->getRouteResolver()));
+$app->add(new Slim\Middleware\RoutingMiddleware($app->getRouteResolver()));
 ```
 
 - The `SecureRouteMiddleware` denies access to a route if the required role is missing in the `roles` 
