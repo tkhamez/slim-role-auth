@@ -18,6 +18,9 @@ composer require tkhamez/slim-role-auth
 Example:
 
 ```php
+use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
+use Tkhamez\Slim\RoleAuth\RoleMiddleware;
+
 $app = new Slim\App();
 
 // Deny access if a required role is missing
