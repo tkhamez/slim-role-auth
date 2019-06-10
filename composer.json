@@ -20,19 +20,25 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.15",
+        "phan/phan": "^2.1",
+        "phpstan/phpstan": "^0.11.8",
         "phpunit/phpunit": "^7.5"
     },
     "suggest": {
-        "ext-xdebug": "*"
+        "ext-ast": "Allows static code analysis with Phan",
+        "ext-xdebug": "Allows code coverage analysis with PHPUnit"
     },
     "autoload": {
         "psr-4": {
-            "Tkhamez\\Slim\\RoleAuth\\": "RoleAuth"
+            "Tkhamez\\Slim\\RoleAuth\\": "RoleAuth",
+            "Test\\": "tests"
         }
     },
     "scripts": {
         "test": "phpunit",
         "test:coverage": "phpunit --coverage-html coverage",
+        "phan": "phan",
+        "phpstan": "phpstan analyse RoleAuth tests --level 7",
         "style": "php-cs-fixer fix ./ --dry-run --diff",
         "style:fix": "php-cs-fixer fix ./"
     },

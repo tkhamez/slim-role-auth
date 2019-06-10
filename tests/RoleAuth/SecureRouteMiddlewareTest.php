@@ -1,9 +1,12 @@
 <?php
 
-namespace Tkhamez\Tests\Slim\RoleAuth;
+namespace Test\RoleAuth;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
+use Test\TestRequest;
+use Test\TestRequestHandler;
+use Test\TestResponseFactory;
 use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 use Slim\Interfaces\RouteInterface;
 
@@ -70,9 +73,9 @@ class SecureRouteMiddlewareTest extends TestCase
 
     private function invokeMiddleware($conf, $path, $roles, $addRoute, $opts = []): ResponseInterface
     {
-        $request = new \TestRequest();
-        $responseFactory = new \TestResponseFactory();
-        $requestHandler = new \TestRequestHandler();
+        $request = new TestRequest();
+        $responseFactory = new TestResponseFactory();
+        $requestHandler = new TestRequestHandler();
 
         if ($addRoute) {
             $route = $this->getMockBuilder(RouteInterface::class)->getMock();

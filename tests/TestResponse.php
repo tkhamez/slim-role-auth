@@ -1,6 +1,7 @@
 <?php
+namespace Test;
 
-class TestResponse implements Psr\Http\Message\ResponseInterface
+class TestResponse implements \Psr\Http\Message\ResponseInterface
 {
     private $headers = [];
 
@@ -50,7 +51,7 @@ class TestResponse implements Psr\Http\Message\ResponseInterface
     {
     }
 
-    public function withBody(Psr\Http\Message\StreamInterface $body)
+    public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
     }
 

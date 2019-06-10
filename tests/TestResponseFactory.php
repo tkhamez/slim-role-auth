@@ -1,9 +1,10 @@
 <?php
+namespace Test;
 
-class TestResponseFactory implements Psr\Http\Message\ResponseFactoryInterface
+class TestResponseFactory implements \Psr\Http\Message\ResponseFactoryInterface
 {
-    public function createResponse(int $code = 200, string $reasonPhrase = ''): Psr\Http\Message\ResponseInterface
+    public function createResponse(int $code = 200, string $reasonPhrase = ''): \Psr\Http\Message\ResponseInterface
     {
-        return new \TestResponse();
+        return new TestResponse();
     }
 }

@@ -1,6 +1,7 @@
 <?php
+namespace Test;
 
-class TestRequest implements Psr\Http\Message\ServerRequestInterface
+class TestRequest implements \Psr\Http\Message\ServerRequestInterface
 {
     public $attributes = [];
 
@@ -44,7 +45,7 @@ class TestRequest implements Psr\Http\Message\ServerRequestInterface
     {
     }
 
-    public function withBody(Psr\Http\Message\StreamInterface $body)
+    public function withBody(\Psr\Http\Message\StreamInterface $body)
     {
     }
 
@@ -68,7 +69,7 @@ class TestRequest implements Psr\Http\Message\ServerRequestInterface
     {
     }
 
-    public function withUri(Psr\Http\Message\UriInterface $uri, $preserveHost = false)
+    public function withUri(\Psr\Http\Message\UriInterface $uri, $preserveHost = false)
     {
     }
 

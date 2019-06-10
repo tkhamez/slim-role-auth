@@ -1,12 +1,13 @@
 <?php
+namespace Test;
 
-class TestRequestHandler implements Psr\Http\Server\RequestHandlerInterface
+class TestRequestHandler implements \Psr\Http\Server\RequestHandlerInterface
 {
     public $request;
 
-    public function handle(Psr\Http\Message\ServerRequestInterface $request): Psr\Http\Message\ResponseInterface
+    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
     {
         $this->request = $request;
-        return new \TestResponse();
+        return new TestResponse();
     }
 }
