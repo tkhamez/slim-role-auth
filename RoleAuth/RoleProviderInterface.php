@@ -14,5 +14,5 @@ interface RoleProviderInterface
      * @param ServerRequestInterface $request
      * @return string[]
      */
-    public function getRoles(ServerRequestInterface $request);
+    public function getRoles(ServerRequestInterface $request): array;
 }

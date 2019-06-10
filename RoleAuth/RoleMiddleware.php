@@ -56,7 +56,7 @@ class RoleMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->shouldAddRoles($request->getAttribute('route'))) {
-            $request = $request->withAttribute('roles', $this->getRoles($request));
+            $request = $request->withAttribute('roles', $this->roleService->getRoles($request));
         }
 
         return $handler->handle($request);
@@ -66,7 +66,7 @@ class RoleMiddleware implements MiddlewareInterface
      * @param RouteInterface|null $route
      * @return bool
      */
-    private function shouldAddRoles(RouteInterface $route = null)
+    private function shouldAddRoles(RouteInterface $route = null): bool
     {
         if ($route === null) {
             return true;
@@ -86,16 +86,5 @@ class RoleMiddleware implements MiddlewareInterface
         }
 
         return true;
-    }
-
-    /**
-     * @param ServerRequestInterface $request
-     * @return array|string[]
-     */
-    private function getRoles(ServerRequestInterface $request)
-    {
-        $roles = $this->roleService->getRoles($request);
-
-        return is_array($roles) ? $roles : [];
     }
 }
