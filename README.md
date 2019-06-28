@@ -25,7 +25,7 @@ $app = Slim\Factory\AppFactory::create();
 
 // Deny access if a required role is missing
 $app->add(new SecureRouteMiddleware(
-    new Slim\Psr7\Factory\ResponseFactory(), // or another implementation of Psr\Http\Message\ResponseFactoryInterface
+    new Slim\Psr7\Factory\ResponseFactory(), // any implementation of Psr\Http\Message\ResponseFactoryInterface
     [
         // route pattern -> roles, first "starts-with" match is used
         '/secured/public' => ['any'],
@@ -36,13 +36,14 @@ $app->add(new SecureRouteMiddleware(
 
 // Add roles to request attribute
 $app->add(new RoleMiddleware(
-    new RoleProvider(), // must implement RoleProviderInterface
+    new Test\TestRoleProvider([]), // any implementation of Tkhamez\Slim\RoleAuth\RoleProviderInterface
     ['route_pattern' => ['/secured']] // optionally limit to these routes
 ));
 
 // Add routing middleware last, so the `route` attribute from `$request` is available
 // (this replaces the determineRouteBeforeAppMiddleware setting from Slim 3).
 $app->add(new Slim\Middleware\RoutingMiddleware($app->getRouteResolver()));
+
 ```
 
 - The `SecureRouteMiddleware` denies access to a route if the required role is missing in the `roles` 

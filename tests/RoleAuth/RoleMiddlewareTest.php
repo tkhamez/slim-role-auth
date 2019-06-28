@@ -3,12 +3,12 @@
 namespace Test\RoleAuth;
 
 use PHPUnit\Framework\TestCase;
-use Test\TestRequest;
+use Psr\Http\Message\ServerRequestInterface;
+use Slim\Interfaces\RouteInterface;
+use Slim\Psr7\Factory\ServerRequestFactory;
 use Test\TestRequestHandler;
 use Test\TestRoleProvider;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
-use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\RouteInterface;
 
 class RoleMiddlewareTest extends TestCase
 {
@@ -48,7 +48,7 @@ class RoleMiddlewareTest extends TestCase
 
     private function invokeMiddleware($path, $routes, $roles, $addRoute): ServerRequestInterface
     {
-        $request = new TestRequest();
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
         $requestHandler = new TestRequestHandler();
 
         if ($addRoute) {
