@@ -49,3 +49,9 @@ $app->add(new RoleMiddleware(
 This needs the Slim setting `determineRouteBeforeAppMiddleware` set to true.
 
 For more information, see the inline documentation for the classes.
+
+## Changelog
+
+### 1.0.0
+
+First stable release.
