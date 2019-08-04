@@ -5,12 +5,14 @@
 
 Middleware for the [Slim 4](http://www.slimframework.com/) framework.
 
+For Slim 3 use the 1.0.0 release.
+
 ## Installation
 
 With Composer:
 
 ```
-composer require tkhamez/slim-role-auth:dev-slim4
+composer require tkhamez/slim-role-auth
 ```
 
 ## Usage
@@ -55,6 +57,10 @@ $app->add(new Slim\Middleware\RoutingMiddleware($app->getRouteResolver()));
 For more information, see the inline documentation for the classes.
 
 ## Changelog
+
+### 2.0.0
+
+Update for Slim 4.
 
 ### 1.0.0
 
