@@ -32,7 +32,7 @@
     "autoload": {
         "psr-4": {
             "Tkhamez\\Slim\\RoleAuth\\": "RoleAuth",
-            "Test\\": "tests"
+            "Tkhamez\\Slim\\RoleAuth\\Test\\": "tests"
         }
     },
     "scripts": {

@@ -1,13 +1,11 @@
 <?php
 
-namespace Test\RoleAuth;
+namespace Tkhamez\Slim\RoleAuth\Test;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Interfaces\RouteInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
-use Test\TestRequestHandler;
-use Test\TestRoleProvider;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 
 class RoleMiddlewareTest extends TestCase

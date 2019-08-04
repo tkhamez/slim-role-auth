@@ -1,5 +1,6 @@
 <?php
-namespace Test;
+
+namespace Tkhamez\Slim\RoleAuth\Test;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tkhamez\Slim\RoleAuth\RoleProviderInterface;

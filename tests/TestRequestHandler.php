@@ -1,13 +1,17 @@
 <?php
-namespace Test;
 
+namespace Tkhamez\Slim\RoleAuth\Test;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-class TestRequestHandler implements \Psr\Http\Server\RequestHandlerInterface
+class TestRequestHandler implements RequestHandlerInterface
 {
     public $request;
 
-    public function handle(\Psr\Http\Message\ServerRequestInterface $request): \Psr\Http\Message\ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $this->request = $request;
         return new Response();

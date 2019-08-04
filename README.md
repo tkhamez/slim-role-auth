@@ -20,8 +20,8 @@ composer require tkhamez/slim-role-auth
 Example:
 
 ```php
-use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
+use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 
 $app = Slim\Factory\AppFactory::create();
 
@@ -38,14 +38,13 @@ $app->add(new SecureRouteMiddleware(
 
 // Add roles to request attribute
 $app->add(new RoleMiddleware(
-    new Test\TestRoleProvider([]), // any implementation of Tkhamez\Slim\RoleAuth\RoleProviderInterface
+    new App\RoleProvider(), // any implementation of Tkhamez\Slim\RoleAuth\RoleProviderInterface
     ['route_pattern' => ['/secured']] // optionally limit to these routes
 ));
 
 // Add routing middleware last, so the `route` attribute from `$request` is available
 // (this replaces the determineRouteBeforeAppMiddleware setting from Slim 3).
-$app->add(new Slim\Middleware\RoutingMiddleware($app->getRouteResolver()));
-
+$app->addRoutingMiddleware();
 ```
 
 - The `SecureRouteMiddleware` denies access to a route if the required role is missing in the `roles` 
