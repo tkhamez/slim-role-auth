@@ -2,9 +2,7 @@
 
 namespace Tkhamez\Slim\RoleAuth\Test;
 
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use Slim\Interfaces\RouteInterface;
 use Slim\Psr7\Factory\ServerRequestFactory;
 use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 
@@ -12,8 +10,8 @@ class RoleMiddlewareTest extends TestCase
 {
     public function testAddsRolesForPaths()
     {
-        $request1 = $this->invokeMiddleware('/path1', ['/path1', '/path2'], ['r1', 'r2'], true);
-        $request2 = $this->invokeMiddleware('/path23/4', ['/path1', '/path2'], ['r1', 'r2'], true);
+        $request1 = $this->invokeMiddleware(['/path1', '/path2'], ['r1', 'r2'], '/path1');
+        $request2 = $this->invokeMiddleware(['/path1', '/path2'], ['r1', 'r2'], '/path23/4');
 
         $this->assertSame(['r1', 'r2'], $request1->getAttribute('roles'));
         $this->assertSame(['r1', 'r2'], $request2->getAttribute('roles'));
@@ -21,8 +19,8 @@ class RoleMiddlewareTest extends TestCase
 
     public function testDoesNotAddRolesForOtherPaths()
     {
-        $request1 = $this->invokeMiddleware('/other/path', ['/path1'], ['role1'], true);
-        $request2 = $this->invokeMiddleware('/not/path1', ['/path1'], ['role1'], true);
+        $request1 = $this->invokeMiddleware(['/path1'], ['role1'], '/other/path');
+        $request2 = $this->invokeMiddleware(['/path1'], ['role1'], '/not/path1');
 
         $this->assertNull($request1->getAttribute('roles'));
         $this->assertNull($request2->getAttribute('roles'));
@@ -30,8 +28,8 @@ class RoleMiddlewareTest extends TestCase
 
     public function testAddsRolesWithoutPaths()
     {
-        $request1 = $this->invokeMiddleware('/path1', null, ['role1'], true);
-        $request2 = $this->invokeMiddleware('/path1', [], ['role1'], true);
+        $request1 = $this->invokeMiddleware(null, ['role1'], '/path1');
+        $request2 = $this->invokeMiddleware([], ['role1'], '/path1');
 
         $this->assertSame(['role1'], $request1->getAttribute('roles'));
         $this->assertSame(['role1'], $request2->getAttribute('roles'));
@@ -39,26 +37,22 @@ class RoleMiddlewareTest extends TestCase
 
     public function testAddsRolesWithoutRouteAttribute()
     {
-        $request = $this->invokeMiddleware('/path1', ['/path1'], ['role1'], false);
+        $request = $this->invokeMiddleware(['/path1'], ['role1']);
 
         $this->assertSame(['role1'], $request->getAttribute('roles'));
     }
 
-    private function invokeMiddleware($path, $routes, $roles, $addRoute): ServerRequestInterface
+    private function invokeMiddleware($routes, $roles, $path = null): ServerRequestInterface
     {
         $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
-        $requestHandler = new TestRequestHandler();
-
-        if ($addRoute) {
-            $route = $this->getMockBuilder(RouteInterface::class)->getMock();
-            $route->method('getPattern')->willReturn($path);
-            $request = $request->withAttribute('route', $route);
-        }
+        $request = $this->addRouteContext($request, $path);
 
         $roleProvider = new TestRoleProvider($roles);
         $roleMiddleware = new RoleMiddleware($roleProvider, ['route_pattern' =>  $routes]);
 
+        $requestHandler = new TestRequestHandler();
         $roleMiddleware->process($request, $requestHandler);
+
         return $requestHandler->request;
     }
 }

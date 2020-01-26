@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 
 /**
  * Denies access to a route if the required role is missing.
@@ -74,7 +75,7 @@ class SecureRouteMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $route = $request->getAttribute('route');
+        $route = RouteContext::fromRequest($request)->getRoute();
         if (! $route instanceof RouteInterface) {
             return $handler->handle($request);
         }

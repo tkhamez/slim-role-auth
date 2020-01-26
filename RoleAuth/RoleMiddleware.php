@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Interfaces\RouteInterface;
+use Slim\Routing\RouteContext;
 
 /**
  * Adds roles to the request attribute "roles".
@@ -55,7 +56,7 @@ class RoleMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if ($this->shouldAddRoles($request->getAttribute('route'))) {
+        if ($this->shouldAddRoles(RouteContext::fromRequest($request)->getRoute())) {
             $request = $request->withAttribute('roles', $this->roleService->getRoles($request));
         }
 

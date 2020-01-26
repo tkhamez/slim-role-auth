@@ -21,9 +21,9 @@
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.15",
         "phan/phan": "^2.1",
-        "phpstan/phpstan": "^0.11.8",
+        "phpstan/phpstan": "^0.12.7",
         "phpunit/phpunit": "^7.5",
-        "slim/psr7": "^0.3.0"
+        "slim/psr7": "^0.6.0"
     },
     "suggest": {
         "ext-ast": "Allows static code analysis with Phan",
