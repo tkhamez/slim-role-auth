@@ -57,6 +57,10 @@ For more information, see the inline documentation for the classes.
 
 ## Changelog
 
+### 2.0.1
+
+Compatibility with Slim 4.4
+
 ### 2.0.0
 
 Update for Slim 4.
