@@ -57,6 +57,11 @@ For more information, see the inline documentation for the classes.
 
 ## Changelog
 
+### 3.0.0
+
+- Raised minimum PHP version to 7.2
+- Added a class constant for the name of the request attribute that holds the roles and changed its name.
+
 ### 2.0.1
 
 Compatibility with Slim 4.4
