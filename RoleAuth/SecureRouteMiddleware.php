@@ -16,7 +16,7 @@ use Slim\Routing\RouteContext;
  * Sends a HTTP status 403 (default) or optionally a "Location"
  * header for a redirect.
  *
- * It loads the roles from the request attribute named "roles"
+ * It loads the roles from an request attribute
  * (an array with string values, e. g. ['role.one', 'role.two']).
  *
  * The role attribute is provided by the RoleMiddleware class.
@@ -80,7 +80,7 @@ class SecureRouteMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         }
 
-        $roles = $request->getAttribute('roles');
+        $roles = $request->getAttribute(RoleMiddleware::ROLES);
         $routePattern = $route->getPattern();
 
         $allowed = true;

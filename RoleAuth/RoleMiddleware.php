@@ -10,7 +10,7 @@ use Slim\Interfaces\RouteInterface;
 use Slim\Routing\RouteContext;
 
 /**
- * Adds roles to the request attribute "roles".
+ * Adds roles to a request attribute.
  *
  * Roles usually come from an authenticated user. It's an array
  * with string values, e. g. ['role.one', 'role.two'].
@@ -19,6 +19,8 @@ use Slim\Routing\RouteContext;
  */
 class RoleMiddleware implements MiddlewareInterface
 {
+    public const ROLES = 'slim_role_auth__roles';
+
     /**
      * @var RoleProviderInterface
      */
@@ -57,7 +59,7 @@ class RoleMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($this->shouldAddRoles(RouteContext::fromRequest($request)->getRoute())) {
-            $request = $request->withAttribute('roles', $this->roleService->getRoles($request));
+            $request = $request->withAttribute(self::ROLES, $this->roleService->getRoles($request));
         }
 
         return $handler->handle($request);

@@ -5,6 +5,7 @@ namespace Tkhamez\Slim\RoleAuth\Test;
 use Psr\Http\Message\ResponseInterface;
 use Slim\Psr7\Factory\ResponseFactory;
 use Slim\Psr7\Factory\ServerRequestFactory;
+use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 
 class SecureRouteMiddlewareTest extends TestCase
@@ -72,7 +73,7 @@ class SecureRouteMiddlewareTest extends TestCase
     {
         $request = (new ServerRequestFactory)->createServerRequest('GET', '/');
         $request = $this->addRouteContext($request, $path);
-        $request = $request->withAttribute('roles', $roles);
+        $request = $request->withAttribute(RoleMiddleware::ROLES, $roles);
 
         $sec = new SecureRouteMiddleware(new ResponseFactory(), $conf, $opts);
 
