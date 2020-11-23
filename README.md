@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/tkhamez/slim-role-auth.svg?branch=master)](https://travis-ci.org/tkhamez/slim-role-auth)
+[![Build Status](https://api.travis-ci.com/tkhamez/slim-role-auth.svg?branch=master)](https://travis-ci.org/tkhamez/slim-role-auth)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/72e1c7e619d44ccd001b/test_coverage)](https://codeclimate.com/github/tkhamez/slim-role-auth/test_coverage)
 
 # Role-based authorization
@@ -42,18 +42,15 @@ $app->add(new RoleMiddleware(
     ['route_pattern' => ['/secured']] // optionally limit to these routes
 ));
 
-// Add routing middleware last, so the `route` attribute from `$request` is available
-// (this replaces the determineRouteBeforeAppMiddleware setting from Slim 3).
+// Add routing middleware last, so the Slim router is available from the request.
 $app->addRoutingMiddleware();
 ```
 
-- The `SecureRouteMiddleware` denies access to a route if the required role is missing in the `roles` 
-  request attribute.
-- The `RoleMiddleware` class adds the `roles` attribute to the request object with roles provided by the 
-  `RoleProvider` class.
-- You can add several role providers for different paths.
+- The `SecureRouteMiddleware` denies access to a route if the required role is missing in the request object.
+- The `RoleMiddleware` class adds roles provided by the `RoleProvider` object to the request object.
+- You can add multiple role providers for different paths.
 
-For more information, see the inline documentation for the classes.
+For more information, see the inline documentation of the classes.
 
 ## Changelog
 
@@ -64,12 +61,12 @@ For more information, see the inline documentation for the classes.
 
 ### 2.0.1
 
-Compatibility with Slim 4.4
+- Compatibility with Slim 4.4
 
 ### 2.0.0
 
-Update for Slim 4.
+- Update for Slim 4.
 
 ### 1.0.0
 
-First stable release.
+- First stable release.
