@@ -19,11 +19,11 @@
         "slim/slim": "^4.0"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.15",
-        "phan/phan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phan/phan": "^4.0",
         "phpstan/phpstan": "^0.12.7",
-        "phpunit/phpunit": "^7.5",
-        "slim/psr7": "^0.6.0"
+        "phpunit/phpunit": "^8.5",
+        "slim/psr7": "^1.4"
     },
     "suggest": {
         "ext-ast": "Allows static code analysis with Phan",
