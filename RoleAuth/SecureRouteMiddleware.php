@@ -35,12 +35,12 @@ class SecureRouteMiddleware implements MiddlewareInterface
     private $responseFactory;
 
     /**
-     * @var array
+     * @var string[][]
      */
     private $secured;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $options;
 
@@ -58,8 +58,8 @@ class SecureRouteMiddleware implements MiddlewareInterface
      * - redirect_url: send a Location header instead of a 403 status code.
      *
      * @param ResponseFactoryInterface $responseFactory
-     * @param array $secured
-     * @param array $options
+     * @param string[][] $secured
+     * @param string[] $options
      */
     public function __construct(ResponseFactoryInterface $responseFactory, array $secured, array $options = [])
     {

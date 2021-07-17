@@ -10,7 +10,7 @@ use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 
 class SecureRouteMiddlewareTest extends TestCase
 {
-    public function testAllowProtectedWithoutRoute()
+    public function testAllowProtectedWithoutRoute(): void
     {
         $conf = ['/secured' => ['role1']];
         $response = $this->invokeMiddleware($conf, ['role2']);
@@ -18,15 +18,15 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testDenyProtectedWithoutRole()
+    public function testDenyProtectedWithoutRole(): void
     {
         $conf = ['/secured' => ['role1']];
-        $response = $this->invokeMiddleware($conf, null, '/secured');
+        $response = $this->invokeMiddleware($conf, [], '/secured');
 
         $this->assertSame(403, $response->getStatusCode());
     }
 
-    public function testDenyProtectedWrongRole()
+    public function testDenyProtectedWrongRole(): void
     {
         $conf = ['/secured' => ['role1', 'role2']];
         $response = $this->invokeMiddleware($conf, ['role3', 'role4'], '/secured');
@@ -34,7 +34,7 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame(403, $response->getStatusCode());
     }
 
-    public function testAllowProtected()
+    public function testAllowProtected(): void
     {
         $conf = ['/secured' => ['role1', 'role2']];
         $response = $this->invokeMiddleware($conf, ['role2', 'role3'], '/secured');
@@ -42,14 +42,14 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testPathMatchesStartsWith()
+    public function testPathMatchesStartsWith(): void
     {
         $conf = ['/p1' => ['role1']];
         $response = $this->invokeMiddleware($conf, ['role1'], '/p1/p2');
         $this->assertSame(200, $response->getStatusCode());
     }
 
-    public function testMatchesFirstFoundPath()
+    public function testMatchesFirstFoundPath(): void
     {
         $conf = ['/p0' => ['role0'], '/p1' => ['role1'], '/p1/p2' => ['role2']];
         $response = $this->invokeMiddleware($conf, ['role1'], '/p1/p2');
@@ -60,7 +60,7 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame(403, $response->getStatusCode());
     }
 
-    public function testRedirects()
+    public function testRedirects(): void
     {
         $conf = ['/secured' => ['role']];
         $opts = ['redirect_url' => '/login'];
@@ -69,9 +69,18 @@ class SecureRouteMiddlewareTest extends TestCase
         $this->assertSame('/login', $response->getHeader('Location')[0]);
     }
 
-    private function invokeMiddleware($conf, $roles, $path = null, $opts = []): ResponseInterface
-    {
-        $request = (new ServerRequestFactory)->createServerRequest('GET', '/');
+    /**
+     * @param string[][] $conf
+     * @param string[] $roles
+     * @param string[] $opts
+     */
+    private function invokeMiddleware(
+        array $conf,
+        array $roles,
+        string $path = null,
+        array $opts = []
+    ): ResponseInterface {
+        $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
         $request = $this->addRouteContext($request, $path);
         $request = $request->withAttribute(RoleMiddleware::ROLES, $roles);
 

@@ -27,7 +27,7 @@ class RoleMiddleware implements MiddlewareInterface
     private $roleService;
 
     /**
-     * @var array
+     * @var string[][]
      */
     private $options;
 
@@ -43,7 +43,7 @@ class RoleMiddleware implements MiddlewareInterface
      * Example: ['route_pattern' => ['/secured']]
      *
      * @param RoleProviderInterface $roleService
-     * @param array $options
+     * @param string[][] $options
      */
     public function __construct(RoleProviderInterface $roleService, array $options = [])
     {

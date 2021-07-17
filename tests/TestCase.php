@@ -20,7 +20,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $request = $request->withAttribute(RouteContext::ROUTE_PARSER, $routeParser);
 
         $routingResults = new RoutingResults(
-            new Dispatcher(new RouteCollector(new ResponseFactory(),new CallableResolver())),
+            new Dispatcher(new RouteCollector(new ResponseFactory(), new CallableResolver())),
             'GET',
             '/',
             200

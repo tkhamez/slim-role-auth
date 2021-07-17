@@ -7,8 +7,14 @@ use Tkhamez\Slim\RoleAuth\RoleProviderInterface;
 
 class TestRoleProvider implements RoleProviderInterface
 {
+    /**
+     * @var string[]
+     */
     private $roles;
 
+    /**
+     * @param string[] $roles
+     */
     public function __construct(array $roles)
     {
         $this->roles = $roles;

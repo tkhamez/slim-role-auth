@@ -8,7 +8,7 @@ use Tkhamez\Slim\RoleAuth\RoleMiddleware;
 
 class RoleMiddlewareTest extends TestCase
 {
-    public function testAddsRolesForPaths()
+    public function testAddsRolesForPaths(): void
     {
         $request1 = $this->invokeMiddleware(['/path1', '/path2'], ['r1', 'r2'], '/path1');
         $request2 = $this->invokeMiddleware(['/path1', '/path2'], ['r1', 'r2'], '/path23/4');
@@ -17,7 +17,7 @@ class RoleMiddlewareTest extends TestCase
         $this->assertSame(['r1', 'r2'], $request2->getAttribute(RoleMiddleware::ROLES));
     }
 
-    public function testDoesNotAddRolesForOtherPaths()
+    public function testDoesNotAddRolesForOtherPaths(): void
     {
         $request1 = $this->invokeMiddleware(['/path1'], ['role1'], '/other/path');
         $request2 = $this->invokeMiddleware(['/path1'], ['role1'], '/not/path1');
@@ -26,23 +26,27 @@ class RoleMiddlewareTest extends TestCase
         $this->assertNull($request2->getAttribute(RoleMiddleware::ROLES));
     }
 
-    public function testAddsRolesWithoutPaths()
+    public function testAddsRolesWithoutPaths(): void
     {
-        $request1 = $this->invokeMiddleware(null, ['role1'], '/path1');
+        $request1 = $this->invokeMiddleware([], ['role1'], '/path1');
         $request2 = $this->invokeMiddleware([], ['role1'], '/path1');
 
         $this->assertSame(['role1'], $request1->getAttribute(RoleMiddleware::ROLES));
         $this->assertSame(['role1'], $request2->getAttribute(RoleMiddleware::ROLES));
     }
 
-    public function testAddsRolesWithoutRouteAttribute()
+    public function testAddsRolesWithoutRouteAttribute(): void
     {
         $request = $this->invokeMiddleware(['/path1'], ['role1']);
 
         $this->assertSame(['role1'], $request->getAttribute(RoleMiddleware::ROLES));
     }
 
-    private function invokeMiddleware($routes, $roles, $path = null): ServerRequestInterface
+    /**
+     * @param string[] $routes
+     * @param string[] $roles
+     */
+    private function invokeMiddleware(array $routes, array $roles, string $path = null): ServerRequestInterface
     {
         $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
         $request = $this->addRouteContext($request, $path);
