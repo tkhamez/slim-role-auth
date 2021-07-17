@@ -54,6 +54,10 @@ For more information, see the inline documentation of the classes.
 
 ## Changelog
 
+### 3.0.1
+
+- Update PHP requirement to include version 8 (^7.2|^8.0).
+
 ### 3.0.0
 
 - Raised minimum PHP version to 7.2
