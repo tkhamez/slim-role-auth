@@ -1,0 +1,31 @@
+name: test
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        php-versions: ['7.2', '7.3', '7.4', '8.0']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: gmp
+          tools: composer:v2
+      - name: Install
+        run: composer install
+      - name: Test
+        if: ${{ matrix.php-versions != '7.4' }}
+        run: vendor/bin/phpunit
+      - name: Test & publish code coverage
+        if: ${{ matrix.php-versions == '7.4' }}
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+        with:
+          coverageCommand: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
