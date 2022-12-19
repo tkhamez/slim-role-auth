@@ -4,13 +4,13 @@ on: [push]
 
 jobs:
   test:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: ['7.2', '7.3', '7.4', '8.0', '8.1']
+        php-versions: ['7.3', '7.4', '8.0', '8.1', '8.2']
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -20,11 +20,11 @@ jobs:
       - name: Install
         run: composer install
       - name: Test
-        if: ${{ matrix.php-versions != '7.4' }}
+        if: ${{ matrix.php-versions != '8.2' }}
         run: vendor/bin/phpunit
       - name: Test & publish code coverage
-        if: ${{ matrix.php-versions == '7.4' }}
-        uses: paambaati/codeclimate-action@v2.7.5
+        if: ${{ matrix.php-versions == '8.2' }}
+        uses: paambaati/codeclimate-action@v3.2.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
         with:

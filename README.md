@@ -25,21 +25,21 @@ use Tkhamez\Slim\RoleAuth\SecureRouteMiddleware;
 
 $app = Slim\Factory\AppFactory::create();
 
-// Deny access if a required role is missing
+// Deny access if a required role is missing.
 $app->add(new SecureRouteMiddleware(
-    new Slim\Psr7\Factory\ResponseFactory(), // any implementation of Psr\Http\Message\ResponseFactoryInterface
+    new Slim\Psr7\Factory\ResponseFactory(), // Any implementation of Psr\Http\Message\ResponseFactoryInterface.
     [
-        // route pattern -> roles, first "starts-with" match is used
+        // Route pattern  -> roles, first "starts-with" match is used.
         '/secured/public' => ['any'],
         '/secured'        => ['user'],
     ],
-    ['redirect_url' => null] // optionally add "Location" header instead of 403 status code
+    ['redirect_url' => null] // Adds "Location" header instead of 403 status code if set.
 ));
 
-// Add roles to request attribute
+// Add roles to request attribute.
 $app->add(new RoleMiddleware(
-    new App\RoleProvider(), // any implementation of Tkhamez\Slim\RoleAuth\RoleProviderInterface
-    ['route_pattern' => ['/secured']] // optionally limit to these routes
+    new App\RoleProvider(), // Any implementation of Tkhamez\Slim\RoleAuth\RoleProviderInterface.
+    ['route_pattern' => ['/secured']] // Optionally limit to these routes.
 ));
 
 // Add routing middleware last, so the Slim router is available from the request.
@@ -52,7 +52,18 @@ $app->addRoutingMiddleware();
 
 For more information, see the inline documentation of the classes.
 
+## Dev Env
+
+```shell
+docker build --tag slim-role-auth .
+docker run -it --mount type=bind,source="$(pwd)",target=/app --workdir /app slim-role-auth /bin/sh
+```
+
 ## Changelog
+
+### 4.0.0
+
+- Raised minimum required PHP version to 7.3.
 
 ### 3.0.1
 
