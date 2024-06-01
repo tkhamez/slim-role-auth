@@ -61,6 +61,10 @@ docker run -it --mount type=bind,source="$(pwd)",target=/app --workdir /app slim
 
 ## Changelog
 
+### 5.0.0
+
+- Raised minimum required PHP version to 7.4.
+
 ### 4.0.0
 
 - Raised minimum required PHP version to 7.3.
