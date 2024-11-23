@@ -69,7 +69,7 @@ class RoleMiddleware implements MiddlewareInterface
      * @param RouteInterface|null $route
      * @return bool
      */
-    private function shouldAddRoles(RouteInterface $route = null): bool
+    private function shouldAddRoles(?RouteInterface $route = null): bool
     {
         if ($route === null) {
             return true;

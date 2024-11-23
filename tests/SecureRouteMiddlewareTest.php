@@ -77,7 +77,7 @@ class SecureRouteMiddlewareTest extends TestCase
     private function invokeMiddleware(
         array $conf,
         array $roles,
-        string $path = null,
+        ?string $path = null,
         array $opts = []
     ): ResponseInterface {
         $request = (new ServerRequestFactory())->createServerRequest('GET', '/');

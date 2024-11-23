@@ -14,7 +14,7 @@ use Slim\Routing\RoutingResults;
 
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    protected function addRouteContext(ServerRequestInterface $request, string $path = null): ServerRequestInterface
+    protected function addRouteContext(ServerRequestInterface $request, ?string $path = null): ServerRequestInterface
     {
         $routeParser = $this->getMockBuilder(RouteParserInterface::class)->getMock();
         $request = $request->withAttribute(RouteContext::ROUTE_PARSER, $routeParser);

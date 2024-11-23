@@ -46,7 +46,7 @@ class RoleMiddlewareTest extends TestCase
      * @param string[] $routes
      * @param string[] $roles
      */
-    private function invokeMiddleware(array $routes, array $roles, string $path = null): ServerRequestInterface
+    private function invokeMiddleware(array $routes, array $roles, ?string $path = null): ServerRequestInterface
     {
         $request = (new ServerRequestFactory())->createServerRequest('GET', '/');
         $request = $this->addRouteContext($request, $path);
