@@ -3,7 +3,6 @@
 [![License](http://poser.pugx.org/tkhamez/slim-role-auth/license)](https://packagist.org/packages/tkhamez/slim-role-auth) 
 [![PHP Version Require](http://poser.pugx.org/tkhamez/slim-role-auth/require/php)](https://packagist.org/packages/tkhamez/slim-role-auth)
 [![build](https://github.com/tkhamez/slim-role-auth/workflows/test/badge.svg)](https://github.com/tkhamez/slim-role-auth/actions)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/72e1c7e619d44ccd001b/test_coverage)](https://codeclimate.com/github/tkhamez/slim-role-auth/test_coverage)
 
 # Role-based authorization
 
