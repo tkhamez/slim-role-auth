@@ -13,7 +13,7 @@ use Slim\Routing\RouteContext;
  * Adds roles to a request attribute.
  *
  * Roles usually come from an authenticated user. It's an array
- * with string values, e. g. ['role.one', 'role.two'].
+ * with string values, e.g. ['role.one', 'role.two'].
  *
  * Roles are loaded from a RoleProviderInterface object.
  */
@@ -21,26 +21,24 @@ class RoleMiddleware implements MiddlewareInterface
 {
     public const ROLES = 'slim_role_auth__roles';
 
-    /**
-     * @var RoleProviderInterface
-     */
-    private $roleService;
+    private RoleProviderInterface $roleService;
 
     /**
      * @var string[][]
      */
-    private $options;
+    private array $options;
 
     /**
      * Constructor.
      *
      * Available options (all optional):
-     * - route_pattern: only add roles for this routes, matched by "starts-with". If omitted the roles are always added.
+     * - route_pattern: only add roles for these routes, matched by "starts-with". If omitted,
+     *   the roles are always added.
      *
-     * The option "route_pattern" is ignored if the "route" attribute is missing in the request object, so roles
-     * are always added if the "route" attribute is missing.
+     * The option "route_pattern" is ignored if the "route" attribute is missing in the request
+     * object, so roles are always added if the "route" attribute is missing.
      *
-     * Example: ['route_pattern' => ['/secured']]
+     * Example: ["route_pattern" => ["/secured"]]
      *
      * @param RoleProviderInterface $roleService
      * @param string[][] $options
@@ -81,7 +79,7 @@ class RoleMiddleware implements MiddlewareInterface
         ) {
             $routePattern = $route->getPattern();
             foreach ($this->options['route_pattern'] as $includePattern) {
-                if (strpos($routePattern, $includePattern) === 0) {
+                if (str_starts_with($routePattern, $includePattern)) {
                     return true;
                 }
             }

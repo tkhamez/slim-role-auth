@@ -10,7 +10,7 @@ class TestRoleProvider implements RoleProviderInterface
     /**
      * @var string[]
      */
-    private $roles;
+    private array $roles;
 
     /**
      * @param string[] $roles

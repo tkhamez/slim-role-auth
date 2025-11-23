@@ -13,11 +13,11 @@ use Slim\Routing\RouteContext;
 /**
  * Denies access to a route if the required role is missing.
  *
- * Sends a HTTP status 403 (default) or optionally a "Location"
+ * Sends an HTTP status 403 (default) or optionally a "Location"
  * header for a redirect.
  *
- * It loads the roles from an request attribute
- * (an array with string values, e. g. ['role.one', 'role.two']).
+ * It loads the roles from a request attribute
+ * (an array with string values, e.g. ['role.one', 'role.two']).
  *
  * The role attribute is provided by the RoleMiddleware class.
  *
@@ -25,24 +25,21 @@ use Slim\Routing\RouteContext;
  * RouteInterface class from the request attribute named "route"
  * (provided by Slim).
  *
- * All routes are *allowed* if the "route" attributes is missing in the request object!
+ * All routes are *allowed* if the "route" attribute is missing in the request object!
  */
 class SecureRouteMiddleware implements MiddlewareInterface
 {
-    /**
-     * @var ResponseFactoryInterface
-     */
-    private $responseFactory;
+    private ResponseFactoryInterface $responseFactory;
 
     /**
      * @var string[][]
      */
-    private $secured;
+    private array $secured;
 
     /**
      * @var string[]
      */
-    private $options;
+    private array $options;
 
     /**
      * Constructor.
@@ -85,7 +82,7 @@ class SecureRouteMiddleware implements MiddlewareInterface
 
         $allowed = true;
         foreach ($this->secured as $securedRoute => $requiredRoles) {
-            if (strpos($routePattern, $securedRoute) !== 0) {
+            if (!str_starts_with($routePattern, $securedRoute)) {
                 continue;
             }
             if (! is_array($roles) || count(array_intersect($requiredRoles, $roles)) === 0) {

@@ -9,10 +9,7 @@ use Slim\Psr7\Response;
 
 class TestRequestHandler implements RequestHandlerInterface
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    public $request;
+    public ServerRequestInterface $request;
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
